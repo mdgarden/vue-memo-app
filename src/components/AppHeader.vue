@@ -18,8 +18,8 @@ export default {
     }
 
     .app-header h1 {
-            float: left;
-            font-size: 24px;
-            text-align: center;
+        float: left;
+        font-size: 24px;
+        text-align: center;
         }
 </style>
