@@ -1,6 +1,6 @@
 <template>
   <div class="memo-app">
-      <memo-form />
+      <memo-form @addMemo="addMemo"/>
       <memo />
   </div>
 </template>
@@ -11,6 +11,18 @@ import Memo from './Memo';
 
 export default {
     name: 'MemoApp',//컴포넌트 이름
+    methods: {
+      addMemo(payload) {
+        //Memoform 에서 올려 받은 데이터를 먼저 컴포넌트 내부 뎅터에 추가
+        this.memos.push(payload);
+        //내부 데이터를 문자열로 변환 후 로컬 스토리지에 저장
+        this.storeMemo();
+      },
+      storeMemo() {
+        const memoToString = JSON.stringify(this.memos);
+        localStorage.setItem('memos', memoToString);
+      }
+    },
     components: {
       MemoForm,
       Memo
