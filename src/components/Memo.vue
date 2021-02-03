@@ -2,7 +2,7 @@
   <li class="memo-item">
     <strong>{{memo.title}}</strong>
     <p>{{ memo.content}}</p>
-    <button type="button"><i class="fas fa-times"></i></button>
+    <button type="button" @click="deleteMemo"><i class="fas fa-times"></i></button>
   </li>
 </template>
 
@@ -14,6 +14,13 @@ export default {
         type: Object
       }
     },
+    methods: {
+      deleteMemo(){
+        //부모로부터 props로 내려받은 memo의 id를 부모 컴포넌트의 사용자 정의 이벤트인deleteMemo 함수의 파라미터로 전달
+        const id = this.memo.id;
+        this.$emit('deleteMemo', id);
+      }
+    }
 }
 </script>
 
