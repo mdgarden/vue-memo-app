@@ -1,26 +1,52 @@
 <template>
   <li class="memo-item">
     <strong>{{memo.title}}</strong>
-    <p>{{ memo.content}}</p>
+    <p @dblclick="handleDblClick">
+      <template v-if="!isEditing">{{ memo.content}}</template>
+      <input v-else type="text" ref="content" :value="memo.content" @blur="handleBlur" @keydown.enter="updateMemo"/>
+    </p>
     <button type="button" @click="deleteMemo"><i class="fas fa-times"></i></button>
   </li>
 </template>
 
 <script>
 export default {
-    name: 'Memo',
-    props: {
-      memo: {
-        type: Object
-      }
-    },
-    methods: {
-      deleteMemo(){
-        //부모로부터 props로 내려받은 memo의 id를 부모 컴포넌트의 사용자 정의 이벤트인deleteMemo 함수의 파라미터로 전달
-        const id = this.memo.id;
-        this.$emit('deleteMemo', id);
-      }
+  name: 'Memo',
+  data() {
+    return {
+      isEditing: false
     }
+  },
+  props: {
+    memo: {
+      type: Object
+    }
+  },
+  methods: {
+    deleteMemo() {
+      //부모로부터 props로 내려받은 memo의 id를 부모 컴포넌트의 사용자 정의 이벤트인deleteMemo 함수의 파라미터로 전달
+      const id = this.memo.id;
+      this.$emit('deleteMemo', id);
+    },
+    handleDblClick() {
+      this.isEditing = true;
+      this.$nextTick(() => {
+        this.$refs.content.focus();
+        });
+    },
+    updateMemo(e) {
+      const id = this.memo.id;
+      const content = e.target.value.trim();
+      if (content.length <= 0) {
+        return false;
+      }
+      this.$emit('updateMemo', { id, content});
+      this.isEditing = false;
+    },
+    handleBlur() {
+      this.isEditing = false;
+    }
+  },
 }
 </script>
 
@@ -47,6 +73,7 @@ export default {
 
   .memo-item strong {
     display: block;
+    text-align: left;
     margin-bottom: 12px;
     font-size: 20px;
     font-weight: normal;
@@ -54,9 +81,17 @@ export default {
   }
 
   .memo-item p {
+    text-align: left;
     margin: 0;
     font-size: 14px;
     line-height: 22px;
     color: #666;
+  }
+
+  .memo-item p input[type="text"] {
+    box-sizing: border-box;
+    width: 100%;
+    font-size: inherit;
+    border: 1px solid #999;
   }
 </style>
