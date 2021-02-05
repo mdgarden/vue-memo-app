@@ -22,7 +22,7 @@ export default {
         // 사용자가 입려할 제목과 콘텐츠가 저장될 데이터의 키(Key)와 value
         title: '',
         content: '',
-      }
+      };
     },
     methods: {
       resetFields() {

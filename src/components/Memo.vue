@@ -20,6 +20,14 @@ export default {
   props: {
     memo: {
       type: Object
+    },
+    editingId: {
+      type: Number
+    }
+  },
+  computed: {
+    isEditing () {
+      return this.memo.id === this.editingId;
     }
   },
   methods: {
