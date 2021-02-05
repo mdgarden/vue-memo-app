@@ -35,14 +35,18 @@ export default {
       },
       deleteMemo(id) {
         const targetIndex = this.memos.findIndex(v => v.id === id);
-        this.memos.splice(targetIndex, 1);
+        memoAPIcore.delete(`/${id}`).then(() => {
+          this.memos.splice(targetIndex, 1);
+        })
         this.storeMemo();
       },
       updateMemo(payload) {
         const { id, content } = payload;
         const targetIndex = this.memos.findIndex(v => v.id === id);
         const targetMemo = this.memos[targetIndex];
-        this.memos.splice(targetIndex, 1, { ...targetMemo, content });
+        memoAPIcore.put(`/${id}`, { content }).then(() => {
+          this.memos.splice(targetIndex, 1, {...targetMemo, content });
+        });
         this.storeMemo();
       },
       created() {
